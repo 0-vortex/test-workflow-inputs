@@ -1,0 +1,25 @@
+name: Do some things
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Do something a or something b"
+        type: choice
+        options:
+          - "something a"
+          - "something b"
+        default: "something a"
+        required: true
+
+jobs:
+  test-output:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: test inputs
+        uses: actions/check-input@v1
+        with:
+          inputs: $([[ ${{ github.event.inputs.target }} == 'something a' ]] && echo 'production' || echo 'beta')
+          input: ${{ github.event.inputs.target }}
+          input-name: 'Environment'
