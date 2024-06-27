@@ -23,7 +23,7 @@ jobs:
       - name: "☁️ compute environment variables"
         id: env
         run: |
-          echo "DEPLOY_ENVIRONMENT=$([[ ${{ inputs.target }} == 'something a' ]] && echo 'production' || echo 'beta')" >> $GITHUB_OUTPUT
+          echo "DEPLOY_ENVIRONMENT=$([[ '${{ inputs.target }}' == 'something a' ]] && echo 'production' || echo 'beta')" >> $GITHUB_OUTPUT
 
   test-output:
     runs-on: ubuntu-latest
