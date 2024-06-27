@@ -13,14 +13,23 @@ on:
         required: true
 
 jobs:
+  setup:
+    name: Set environment variables
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      DEPLOY_ENVIRONMENT: ${{ steps.env.outputs.DEPLOY_ENVIRONMENT }}
+    steps:
+      - name: "☁️ compute environment variables"
+        id: env
+        run: |
+          echo "DEPLOY_ENVIRONMENT=$([[ ${{ inputs.target }} == 'something a' ]] && echo 'production' || echo 'beta')" >> $GITHUB_OUTPUT
+
   test-output:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs:
+      - setup
     steps:
-      - name: define variable
-        id: env
-        run: | 
-          echo "DEPLOY_ENVIRONMENT=$([[ ${{ inputs.target }} == 'something a' ]] && echo 'production' || echo 'beta')" >> $GITHUB_OUTPUT
-
       - name: test inputs
-        run: echo ${{ steps.env.outputs.DEPLOY_ENVIRONMENT }}
+        run: echo ${{ needs.setup.outputs.DEPLOY_ENVIRONMENT }}
