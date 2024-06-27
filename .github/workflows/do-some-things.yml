@@ -18,7 +18,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: test inputs
-        uses: actions/check-input@v1
+        uses: bitshopp/check-input@v1
         with:
           inputs: $([[ ${{ github.event.inputs.target }} == 'something a' ]] && echo 'production' || echo 'beta')
           input: ${{ github.event.inputs.target }}
